@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Grid Sketchpad</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+    .controls {
+      margin: 20px;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      width: 960px; /* Fixed total width */
+      height: 960px; /* Fixed total height */
+      border: 1px solid #ccc;
+    }
+    .square {
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+      background-color: white; /* Default background */
+      transition: background-color 0.2s;
+    }
+    .hovered {
+      background-color: #3498db; /* Change color on hover */
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <button id="newGridButton">Create New Grid</button>
+  </div>
+  <div class="container"></div>
+
+  <script>
+    const container = document.querySelector('.container');
+    const newGridButton = document.querySelector('#newGridButton');
+
+    // Function to create a grid with given size
+    function createGrid(size) {
+      // Clear the existing grid
+      container.innerHTML = '';
+
+      // Calculate square size to fit within container
+      const squareSize = 960 / size;
+
+      // Create the grid squares
+      for (let i = 0; i < size * size; i++) {
+        const square = document.createElement('div');
+        square.classList.add('square');
+        square.style.width = `${squareSize}px`;
+        square.style.height = `${squareSize}px`;
+
+        // Add hover effect
+        square.addEventListener('mouseover', () => {
+            const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+            square.style.backgroundColor = randomColor;
+        });
+
+        container.appendChild(square);
+      }
+    }
+
+    // Event listener for the button
+    newGridButton.addEventListener('click', () => {
+      let size = prompt('Enter the number of squares per side (max 100):', 16);
+
+      // Validate the input
+      size = parseInt(size);
+      if (isNaN(size) || size < 1 || size > 100) {
+        alert('Please enter a valid number between 1 and 100.');
+        return;
+      }
+
+      // Create a new grid with the specified size
+      createGrid(size);
+    });
+
+    // Initialize the grid with a default size
+    createGrid(16);
+  </script>
+</body>
+</html>
